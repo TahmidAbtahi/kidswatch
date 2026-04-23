@@ -31,7 +31,7 @@
   .screen.active { display: flex; }
 
   /* ===== KIDS ===== */
-  #kids-screen { background: linear-gradient(160deg, #E1F5EE 0%, #FFF8F0 40%, #FBEAF0 100%); min-height: 100vh; }
+  #kids-screen { background: linear-gradient(160deg, #E1F5EE 0%, #FFF8F0 40%, #FBEAF0 100%); }
 
   .kids-header {
     background: white; padding: 16px 24px;
@@ -65,6 +65,7 @@
     display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px; padding: 20px 24px 40px; max-width: 1200px; margin: 0 auto; width: 100%;
   }
+
   .video-card {
     background: white; border-radius: var(--radius); overflow: hidden;
     box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
@@ -82,10 +83,10 @@
   }
   .video-card:hover .play-overlay { opacity: 1; }
   .play-arrow { width:0; height:0; border-top:11px solid transparent; border-bottom:11px solid transparent; border-left:20px solid #5DCAA5; margin-left:4px; }
+
   .featured-badge {
-    position: absolute; top:8px; left:8px;
-    background: rgba(255,255,255,0.92); border-radius:50px;
-    font-size:10px; font-weight:800; padding:2px 8px; color:#534AB7;
+    position: absolute; top:8px; left:8px; background:rgba(255,255,255,0.92);
+    border-radius:50px; font-size:10px; font-weight:800; padding:2px 8px; color:#534AB7;
   }
   .card-info { padding: 12px 14px 16px; }
   .card-channel { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
@@ -103,8 +104,45 @@
   .back-btn { background:#222; border:none; border-radius:50px; padding:9px 18px; color:white; font-family:'Nunito',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:background 0.2s; flex-shrink:0; }
   .back-btn:hover { background:#333; }
   .player-title { font-family:'Baloo 2',cursive; font-size:18px; font-weight:700; color:white; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .player-embed { width:100%; background:#000; }
-  .player-embed iframe { display:block; width:100%; aspect-ratio:16/9; border:none; }
+
+  /* Wrapper that blocks YouTube UI clicks */
+  .player-wrap {
+    position: relative;
+    width: 100%;
+    background: #000;
+  }
+  .player-wrap iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: none;
+  }
+  /* Transparent overlay blocks the YouTube logo, title bar, and top-right controls.
+     It covers only the top and bottom bars where YouTube buttons live,
+     leaving the centre of the video fully interactive (play/pause on tap still works). */
+  .yt-block-top {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 60px; /* covers top title bar */
+    z-index: 5;
+    background: transparent;
+    cursor: default;
+  }
+  .yt-block-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 44px; /* covers bottom progress/logo bar */
+    z-index: 5;
+    background: transparent;
+    cursor: default;
+  }
+  /* Extra block on top-right for the YT logo/watermark */
+  .yt-block-corner {
+    position: absolute; top: 0; right: 0;
+    width: 120px; height: 44px;
+    z-index: 5;
+    background: transparent;
+    cursor: default;
+  }
+
   .player-meta { padding:20px 24px; color:white; }
   .player-meta h2 { font-family:'Baloo 2',cursive; font-size:22px; font-weight:700; margin-bottom:4px; }
   .player-meta p { color:#aaa; font-size:14px; }
@@ -163,7 +201,6 @@
   .vid-actions { display:flex; gap:8px; flex-shrink:0; align-items:center; }
   .btn-icon { background:none; border:2px solid #EEE; border-radius:10px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:15px; transition:all 0.2s; }
   .btn-icon.del:hover { border-color:#F09595; background:#FCEBEB; }
-  .preloaded-star { font-size:14px; }
 
   /* TAG COLORS */
   .tag-learning { background:#E1F5EE; color:#0F6E56; }
@@ -215,7 +252,12 @@
     <button class="back-btn" onclick="goBack()">← Back</button>
     <div class="player-title" id="player-title"></div>
   </div>
-  <div class="player-embed" id="player-embed"></div>
+  <div class="player-wrap" id="player-wrap">
+    <!-- iframe injected here -->
+    <div class="yt-block-top"></div>
+    <div class="yt-block-bottom"></div>
+    <div class="yt-block-corner"></div>
+  </div>
   <div class="player-meta">
     <h2 id="player-meta-title"></h2>
     <p id="player-meta-sub"></p>
@@ -254,7 +296,7 @@
       </div>
       <div class="form-row" style="margin-top:12px">
         <input class="form-input" id="input-name" type="text" placeholder="Title (optional)" />
-        <input class="form-input" id="input-channel" type="text" placeholder="Channel name (optional)" style="min-width:140px;flex:0.6" />
+        <input class="form-input" id="input-channel" type="text" placeholder="Channel (optional)" style="min-width:140px;flex:0.6" />
         <select class="tag-select" id="input-tag">
           <option value="fun">🎉 Fun</option>
           <option value="learning">📚 Learning</option>
@@ -268,9 +310,8 @@
     </div>
 
     <div class="section-title">All Videos (<span id="video-count">0</span>)</div>
-    <div class="info-banner">⭐ Purple-bar videos are preloaded defaults — great starting points. You can remove any of them.</div>
+    <div class="info-banner">⭐ Purple-bar videos are preloaded defaults. You can remove any of them.</div>
     <div class="video-list" id="parent-list"></div>
-
   </div>
 </div>
 
@@ -331,28 +372,42 @@
 </div>
 
 <script>
-// ===== 15 PRELOADED KIDS VIDEOS =====
+// ===== 4 VERIFIED PRELOADED VIDEOS =====
+// IDs confirmed from YouTube search results
 const PRELOADED = [
-  { id: 'sCNrK-nSAkU', title: 'Wheels on the Bus',               channel: 'Cocomelon',              tag: 'music'    },
-  { id: 'hS5CfP8n_js', title: 'Blippi Explores the Zoo',         channel: 'Blippi',                 tag: 'learning' },
-  { id: 'TpPtOWkWCjk', title: 'Baby Shark Dance',                channel: 'Pinkfong',               tag: 'music'    },
-  { id: 'wbMOQLlNTdo', title: 'Why Do We Have Seasons?',         channel: 'SciShow Kids',           tag: 'science'  },
-  { id: 'dE_GGMBvstc', title: 'Old MacDonald Had a Farm',        channel: 'Super Simple Songs',     tag: 'music'    },
-  { id: 'q5IQMZ8HYUI', title: 'All About Dinosaurs',             channel: 'National Geographic Kids', tag: 'science' },
-  { id: 'kkPkHFkOSoA', title: 'Numberblocks — Learn to Count',   channel: 'Numberblocks',           tag: 'learning' },
-  { id: 'c0XzKohFNW0', title: 'Alphablocks — Learn the Alphabet',channel: 'Alphablocks',            tag: 'learning' },
-  { id: 'MFaDeOkIHEo', title: 'What Is a Rainbow?',              channel: 'SciShow Kids',           tag: 'science'  },
-  { id: '6nqMegdbut4', title: 'Goodnight Moon — Read Aloud',     channel: 'Awnie\'s House',         tag: 'story'    },
-  { id: 'o7oHfOmvqk4', title: 'How to Draw a Cat',               channel: 'Art for Kids Hub',       tag: 'fun'      },
-  { id: 'TFHoKLBMuDE', title: 'Stomp and Shake Dance Break',     channel: 'GoNoodle',               tag: 'fun'      },
-  { id: 'uB3M_TOp-z8', title: 'How Does the Sun Give Us Energy?',channel: 'TED-Ed',                 tag: 'science'  },
-  { id: 'oYNiEfpGVo0', title: 'If You\'re Happy and You Know It',channel: 'Super Simple Songs',     tag: 'music'    },
-  { id: 'rBGKHKpDhPo', title: 'Colors Song for Kids',            channel: 'Cocomelon',              tag: 'learning' },
+  {
+    id: 'bXA3EM4LqMU',
+    title: 'Wheels on the Bus',
+    channel: 'Cocomelon',
+    tag: 'music',
+    preloaded: true
+  },
+  {
+    id: 'XqZsoesa55w',
+    title: 'Baby Shark Dance',
+    channel: 'Pinkfong',
+    tag: 'music',
+    preloaded: true
+  },
+  {
+    id: 'UQjT5uKp2hg',
+    title: 'Why Are There Seasons?',
+    channel: 'SciShow Kids',
+    tag: 'science',
+    preloaded: true
+  },
+  {
+    id: 'CK9z6yH5sew',
+    title: 'Numbers 1 to 5',
+    channel: 'Numberblocks',
+    tag: 'learning',
+    preloaded: true
+  },
 ];
 
 const TAG_LABELS = { fun:'🎉 Fun', learning:'📚 Learning', music:'🎵 Music', story:'📖 Story', science:'🔭 Science', other:'🌟 Other' };
 const TAG_EMOJIS = { fun:'🎉', learning:'📚', music:'🎵', story:'📖', science:'🔭', other:'🌟' };
-const STORE_KEY  = 'kidswatch_v3';
+const STORE_KEY  = 'kidswatch_v4';
 
 let state        = { pin: null, videos: [] };
 let pinInput     = '';
@@ -364,14 +419,14 @@ function saveState() { try { localStorage.setItem(STORE_KEY, JSON.stringify(stat
 function loadState() {
   try { const r = localStorage.getItem(STORE_KEY); if (r) Object.assign(state, JSON.parse(r)); } catch(e) {}
   if (!state.videos || state.videos.length === 0) {
-    state.videos = PRELOADED.map(v => Object.assign({}, v, { preloaded: true, added: 0 }));
+    state.videos = PRELOADED.map(v => Object.assign({}, v, { added: 0 }));
   }
 }
 
 // ===== YOUTUBE =====
 function getYTId(url) {
   if (!url) return null;
-  const pp = [ /[?&]v=([a-zA-Z0-9_-]{11})/, /youtu\.be\/([a-zA-Z0-9_-]{11})/, /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/, /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/ ];
+  const pp = [/[?&]v=([a-zA-Z0-9_-]{11})/, /youtu\.be\/([a-zA-Z0-9_-]{11})/, /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/, /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/];
   for (const p of pp) { const m = url.match(p); if (m) return m[1]; }
   if (/^[a-zA-Z0-9_-]{11}$/.test(url.trim())) return url.trim();
   return null;
@@ -412,8 +467,7 @@ function addVideo() {
 
 // ===== DELETE =====
 function deleteVideo(idx) {
-  const v = state.videos[idx];
-  if (!confirm('Remove "' + v.title + '"?')) return;
+  if (!confirm('Remove "' + state.videos[idx].title + '"?')) return;
   state.videos.splice(idx, 1);
   saveState(); renderAll();
 }
@@ -425,11 +479,13 @@ function renderKids() {
   const grid = document.getElementById('kids-grid');
   const bar  = document.getElementById('filter-bar-kids');
   const tags = [...new Set(state.videos.map(v => v.tag))];
+
   bar.innerHTML = '';
   if (state.videos.length > 0) {
     bar.appendChild(chip('🌟 All', activeFilter === 'all', () => { activeFilter='all'; renderKids(); }));
     tags.forEach(t => bar.appendChild(chip(TAG_LABELS[t]||t, activeFilter===t, () => { activeFilter=t; renderKids(); })));
   }
+
   const list = activeFilter === 'all' ? state.videos : state.videos.filter(v => v.tag === activeFilter);
   if (list.length === 0) {
     grid.innerHTML = '<div class="empty-state"><div class="empty-emoji">🎬</div><div class="empty-title">' + (state.videos.length===0?'No videos yet!':'Nothing here!') + '</div><div class="empty-sub">' + (state.videos.length===0?'Ask a parent to add some videos 😊':'Try another category!') + '</div></div>';
@@ -437,7 +493,7 @@ function renderKids() {
   }
   grid.innerHTML = list.map(v => {
     const i = state.videos.indexOf(v);
-    return '<div class="video-card" onclick="play(' + i + ')">' +
+    return '<div class="video-card" onclick="playVideo(' + i + ')">' +
       '<div class="thumb-wrap">' +
         '<img src="' + thumb(v.id) + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'" />' +
         '<div class="thumb-placeholder" style="display:none">' + (TAG_EMOJIS[v.tag]||'🎬') + '</div>' +
@@ -476,7 +532,6 @@ function renderParent() {
         '<span class="vid-tag-badge tag-' + v.tag + '">' + (TAG_LABELS[v.tag]||v.tag) + '</span>' +
       '</div>' +
       '<div class="vid-actions">' +
-        (v.preloaded ? '<span class="preloaded-star" title="Preloaded">⭐</span>' : '') +
         '<button class="btn-icon del" onclick="deleteVideo(' + i + ')" title="Remove">🗑</button>' +
       '</div>' +
     '</div>'
@@ -486,16 +541,35 @@ function renderParent() {
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ===== PLAYER =====
-function play(idx) {
+function playVideo(idx) {
   const v = state.videos[idx];
-  document.getElementById('player-title').textContent     = v.title;
+  document.getElementById('player-title').textContent      = v.title;
   document.getElementById('player-meta-title').textContent = v.title;
   document.getElementById('player-meta-sub').textContent   = (v.channel ? v.channel + ' · ' : '') + (TAG_LABELS[v.tag]||v.tag);
-  document.getElementById('player-embed').innerHTML =
-    '<iframe src="https://www.youtube.com/embed/' + v.id + '?autoplay=1&rel=0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>';
+
+  // Insert iframe before the blocker divs so overlays sit on top
+  const wrap = document.getElementById('player-wrap');
+  // Remove any old iframe
+  const old = wrap.querySelector('iframe');
+  if (old) old.remove();
+  const iframe = document.createElement('iframe');
+  // modestbranding=1 hides the YouTube logo in the control bar
+  // rel=0 stops related videos from other channels
+  // iv_load_policy=3 hides annotations
+  iframe.src = 'https://www.youtube.com/embed/' + v.id + '?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3';
+  iframe.setAttribute('allowfullscreen', '');
+  iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
+  wrap.insertBefore(iframe, wrap.firstChild);
+
   showScreen('player-screen');
 }
-function goBack() { document.getElementById('player-embed').innerHTML = ''; showScreen('kids-screen'); }
+
+function goBack() {
+  const wrap = document.getElementById('player-wrap');
+  const old = wrap.querySelector('iframe');
+  if (old) old.remove();
+  showScreen('kids-screen');
+}
 
 // ===== SCREENS =====
 function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
@@ -540,8 +614,8 @@ function updatePinDots() { for(let i=0;i<4;i++) document.getElementById('pd'+i).
 // ===== CHANGE PIN =====
 function openChangePinOverlay() {
   cpStep='current'; cpInput=''; cpNewPin=''; updateCpDots();
-  document.getElementById('cp-sub').textContent = 'Enter your current PIN';
-  document.getElementById('cp-error').textContent = '';
+  document.getElementById('cp-sub').textContent='Enter your current PIN';
+  document.getElementById('cp-error').textContent='';
   document.getElementById('changepin-overlay').classList.add('active');
 }
 function cancelChangePin() { document.getElementById('changepin-overlay').classList.remove('active'); }

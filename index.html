@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>KidsWatch 🌟</title>
+<meta name="description" content="A safe, parent-curated YouTube playlist for kids." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -14,10 +15,8 @@
     --sky: #5DCAA5;
     --sun: #FAC775;
     --coral: #F0997B;
-    --pink: #ED93B1;
     --purple: #AFA9EC;
     --bg: #FFF8F0;
-    --card: #FFFFFF;
     --text: #2C2C2A;
     --muted: #888780;
     --border: rgba(0,0,0,0.08);
@@ -25,542 +24,192 @@
     --shadow: 0 4px 20px rgba(0,0,0,0.08);
   }
 
-  html, body {
-    height: 100%;
-  }
+  html, body { height: 100%; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; color: var(--text); overflow-x: hidden; }
 
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg);
-    min-height: 100vh;
-    color: var(--text);
-    overflow-x: hidden;
-  }
-
-  /* ===== SCREENS ===== */
   .screen { display: none; min-height: 100vh; flex-direction: column; }
   .screen.active { display: flex; }
 
-  /* ===== KIDS MODE ===== */
-  #kids-screen {
-    background: linear-gradient(160deg, #E1F5EE 0%, #FFF8F0 40%, #FBEAF0 100%);
-    min-height: 100vh;
-  }
+  /* ===== KIDS ===== */
+  #kids-screen { background: linear-gradient(160deg, #E1F5EE 0%, #FFF8F0 40%, #FBEAF0 100%); min-height: 100vh; }
 
   .kids-header {
-    background: white;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 3px solid var(--sun);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    background: white; padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 3px solid var(--sun); position: sticky; top: 0; z-index: 10;
     box-shadow: 0 2px 12px rgba(0,0,0,0.06);
   }
-
   .kids-logo {
-    font-family: 'Baloo 2', cursive;
-    font-size: 28px;
-    font-weight: 800;
+    font-family: 'Baloo 2', cursive; font-size: 28px; font-weight: 800;
     background: linear-gradient(135deg, #5DCAA5, #AFA9EC);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
-
   .stars-deco { font-size: 22px; letter-spacing: 4px; }
-
   .parent-btn {
-    background: white;
-    border: 2px solid var(--border);
-    border-radius: 50px;
-    padding: 9px 18px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    background: white; border: 2px solid var(--border); border-radius: 50px;
+    padding: 9px 18px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700;
+    color: var(--muted); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
   }
   .parent-btn:hover { border-color: var(--purple); color: #534AB7; }
 
-  .filter-bar {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    padding: 16px 24px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px 24px 0; max-width: 1200px; margin: 0 auto; width: 100%; }
   .filter-chip {
-    padding: 6px 16px;
-    border-radius: 50px;
-    border: 2px solid transparent;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    background: white;
-    color: var(--muted);
-    border-color: #E8E6E0;
-    transition: all 0.2s;
-    user-select: none;
+    padding: 6px 16px; border-radius: 50px; border: 2px solid #E8E6E0;
+    font-size: 13px; font-weight: 700; cursor: pointer; background: white; color: var(--muted);
+    transition: all 0.2s; user-select: none;
   }
   .filter-chip.active { border-color: #AFA9EC; color: #534AB7; background: #EEEDFE; }
   .filter-chip:hover { border-color: #AFA9EC; }
 
   .kids-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    padding: 20px 24px 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px; padding: 20px 24px 40px; max-width: 1200px; margin: 0 auto; width: 100%;
   }
-
   .video-card {
-    background: white;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: 2.5px solid transparent;
-    position: relative;
+    background: white; border-radius: var(--radius); overflow: hidden;
+    box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    border: 2.5px solid transparent; position: relative;
   }
-  .video-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 14px 36px rgba(0,0,0,0.14);
-    border-color: var(--sky);
-  }
+  .video-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 14px 36px rgba(0,0,0,0.14); border-color: var(--sky); }
 
-  .thumb-wrap {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%;
-    background: linear-gradient(135deg, #E1F5EE, #EEEDFE);
-    overflow: hidden;
-  }
-  .thumb-wrap img {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-  }
-  .thumb-placeholder {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 52px;
-  }
+  .thumb-wrap { position: relative; width: 100%; padding-top: 56.25%; background: linear-gradient(135deg, #E1F5EE, #EEEDFE); overflow: hidden; }
+  .thumb-wrap img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; }
+  .thumb-placeholder { position: absolute; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; font-size:52px; }
   .play-overlay {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 56px; height: 56px;
-    background: rgba(255,255,255,0.92);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s;
+    position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:56px; height:56px; background:rgba(255,255,255,0.92); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s;
   }
   .video-card:hover .play-overlay { opacity: 1; }
-  .play-arrow {
-    width: 0; height: 0;
-    border-top: 11px solid transparent;
-    border-bottom: 11px solid transparent;
-    border-left: 20px solid #5DCAA5;
-    margin-left: 5px;
+  .play-arrow { width:0; height:0; border-top:11px solid transparent; border-bottom:11px solid transparent; border-left:20px solid #5DCAA5; margin-left:4px; }
+  .featured-badge {
+    position: absolute; top:8px; left:8px;
+    background: rgba(255,255,255,0.92); border-radius:50px;
+    font-size:10px; font-weight:800; padding:2px 8px; color:#534AB7;
   }
-
   .card-info { padding: 12px 14px 16px; }
-  .card-title {
-    font-weight: 800;
-    font-size: 15px;
-    line-height: 1.35;
-    color: var(--text);
-    margin-bottom: 6px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .card-tag {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 3px 12px;
-    border-radius: 50px;
-  }
+  .card-channel { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
+  .card-title { font-weight:800; font-size:15px; line-height:1.35; color:var(--text); margin-bottom:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .card-tag { display:inline-block; font-size:12px; font-weight:700; padding:3px 12px; border-radius:50px; }
 
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 80px 20px;
-  }
-  .empty-emoji { font-size: 72px; margin-bottom: 16px; }
-  .empty-title { font-family: 'Baloo 2', cursive; font-size: 26px; font-weight: 700; color: var(--muted); }
-  .empty-sub { font-size: 16px; color: var(--muted); margin-top: 8px; }
+  .empty-state { grid-column:1/-1; text-align:center; padding:80px 20px; }
+  .empty-emoji { font-size:72px; margin-bottom:16px; }
+  .empty-title { font-family:'Baloo 2',cursive; font-size:26px; font-weight:700; color:var(--muted); }
+  .empty-sub { font-size:16px; color:var(--muted); margin-top:8px; }
 
-  /* ===== PLAYER SCREEN ===== */
+  /* ===== PLAYER ===== */
   #player-screen { background: #0a0a0a; }
+  .player-header { background:#111; padding:14px 20px; display:flex; align-items:center; gap:14px; border-bottom:1px solid #222; }
+  .back-btn { background:#222; border:none; border-radius:50px; padding:9px 18px; color:white; font-family:'Nunito',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:background 0.2s; flex-shrink:0; }
+  .back-btn:hover { background:#333; }
+  .player-title { font-family:'Baloo 2',cursive; font-size:18px; font-weight:700; color:white; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .player-embed { width:100%; background:#000; }
+  .player-embed iframe { display:block; width:100%; aspect-ratio:16/9; border:none; }
+  .player-meta { padding:20px 24px; color:white; }
+  .player-meta h2 { font-family:'Baloo 2',cursive; font-size:22px; font-weight:700; margin-bottom:4px; }
+  .player-meta p { color:#aaa; font-size:14px; }
 
-  .player-header {
-    background: #111;
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    border-bottom: 1px solid #222;
-  }
-  .back-btn {
-    background: #222;
-    border: none;
-    border-radius: 50px;
-    padding: 9px 18px;
-    color: white;
-    font-family: 'Nunito', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s;
-    flex-shrink: 0;
-  }
-  .back-btn:hover { background: #333; }
-  .player-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: 18px;
-    font-weight: 700;
-    color: white;
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .player-embed {
-    width: 100%;
-    background: #000;
-  }
-  .player-embed iframe {
-    display: block;
-    width: 100%;
-    aspect-ratio: 16/9;
-    border: none;
-  }
-  .player-meta { padding: 20px 24px; color: white; }
-  .player-meta h2 { font-family: 'Baloo 2', cursive; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-  .player-meta p { color: #aaa; font-size: 14px; }
-
-  /* ===== PARENT SCREEN ===== */
+  /* ===== PARENT ===== */
   #parent-screen { background: #F1EFE8; }
+  .parent-header { background:white; padding:16px 28px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--border); position:sticky; top:0; z-index:10; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+  .parent-logo { font-family:'Baloo 2',cursive; font-size:22px; font-weight:800; color:#534AB7; }
+  .btn-exit { background:none; border:2px solid #DDD; border-radius:50px; padding:8px 18px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; color:var(--muted); cursor:pointer; transition:all 0.2s; }
+  .btn-exit:hover { border-color:var(--coral); color:#993C1D; }
 
-  .parent-header {
-    background: white;
-    padding: 16px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 2px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-  .parent-logo {
-    font-family: 'Baloo 2', cursive;
-    font-size: 22px;
-    font-weight: 800;
-    color: #534AB7;
-  }
-  .btn-exit {
-    background: none;
-    border: 2px solid #DDD;
-    border-radius: 50px;
-    padding: 8px 18px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-exit:hover { border-color: var(--coral); color: #993C1D; }
+  .parent-body { max-width:900px; margin:0 auto; padding:28px 24px 60px; }
+  .section-title { font-family:'Baloo 2',cursive; font-size:20px; font-weight:700; color:var(--text); margin-bottom:16px; }
 
-  .parent-body { max-width: 900px; margin: 0 auto; padding: 28px 24px 60px; }
+  .pin-section { background:white; border-radius:var(--radius); padding:24px; box-shadow:var(--shadow); margin-bottom:28px; }
+  .pin-row { display:flex; gap:10px; align-items:center; margin:14px 0; }
+  .pin-dot { width:14px; height:14px; border-radius:50%; background:#AFA9EC; }
+  .pin-hint { font-size:13px; color:var(--muted); margin-left:4px; }
+  .btn-change-pin { background:none; border:2px solid #AFA9EC; border-radius:10px; padding:7px 18px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; color:#534AB7; cursor:pointer; transition:all 0.2s; }
+  .btn-change-pin:hover { background:#EEEDFE; }
 
-  .section-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 16px;
-  }
+  .add-form { background:white; border-radius:var(--radius); padding:24px; box-shadow:var(--shadow); margin-bottom:28px; }
+  .form-row { display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+  .form-input { flex:1; min-width:200px; padding:11px 16px; border:2px solid #E8E6E0; border-radius:12px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:600; color:var(--text); background:#FAFAFA; outline:none; transition:border-color 0.2s; }
+  .form-input:focus { border-color:#AFA9EC; background:white; }
+  .form-input::placeholder { color:#C0BEB7; font-weight:400; }
+  .tag-select { padding:11px 16px; border:2px solid #E8E6E0; border-radius:12px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:600; color:var(--text); background:#FAFAFA; outline:none; cursor:pointer; }
+  .tag-select:focus { border-color:#AFA9EC; }
+  .btn-add { background:linear-gradient(135deg,#5DCAA5,#AFA9EC); border:none; border-radius:12px; padding:11px 26px; color:white; font-family:'Nunito',sans-serif; font-size:14px; font-weight:800; cursor:pointer; transition:opacity 0.2s,transform 0.1s; white-space:nowrap; }
+  .btn-add:hover { opacity:0.88; }
+  .btn-add:active { transform:scale(0.97); }
 
-  /* PIN card */
-  .pin-section {
-    background: white;
-    border-radius: var(--radius);
-    padding: 24px;
-    box-shadow: var(--shadow);
-    margin-bottom: 28px;
-  }
-  .pin-display { display: flex; gap: 10px; align-items: center; margin: 14px 0; }
-  .pin-dot { width: 14px; height: 14px; border-radius: 50%; background: #AFA9EC; }
-  .pin-text { font-size: 13px; color: var(--muted); margin-left: 4px; }
-  .btn-change-pin {
-    background: none;
-    border: 2px solid #AFA9EC;
-    border-radius: 10px;
-    padding: 7px 18px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: #534AB7;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-change-pin:hover { background: #EEEDFE; }
+  .url-preview { background:#F7F5F0; border-radius:12px; padding:14px; margin-top:4px; display:none; align-items:center; gap:14px; border:1.5px solid #E8E6E0; }
+  .url-preview.visible { display:flex; }
+  .preview-thumb { width:90px; height:60px; border-radius:8px; overflow:hidden; background:#DDD; flex-shrink:0; }
+  .preview-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  .preview-vid-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+  .preview-vid-id { font-size:11px; color:var(--muted); font-family:monospace; }
 
-  /* Add form */
-  .add-form {
-    background: white;
-    border-radius: var(--radius);
-    padding: 24px;
-    box-shadow: var(--shadow);
-    margin-bottom: 28px;
-  }
-  .form-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-  }
-  .form-input {
-    flex: 1;
-    min-width: 200px;
-    padding: 11px 16px;
-    border: 2px solid #E8E6E0;
-    border-radius: 12px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    background: #FAFAFA;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-input:focus { border-color: #AFA9EC; background: white; }
-  .form-input::placeholder { color: #C0BEB7; font-weight: 400; }
+  .info-banner { background:#EEEDFE; border-radius:12px; padding:12px 16px; margin-bottom:20px; font-size:13px; font-weight:600; color:#534AB7; border-left:4px solid #AFA9EC; line-height:1.5; }
 
-  .tag-select {
-    padding: 11px 16px;
-    border: 2px solid #E8E6E0;
-    border-radius: 12px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    background: #FAFAFA;
-    outline: none;
-    cursor: pointer;
-    transition: border-color 0.2s;
-  }
-  .tag-select:focus { border-color: #AFA9EC; }
+  .video-list { display:flex; flex-direction:column; gap:12px; }
+  .no-videos { text-align:center; padding:40px; color:var(--muted); font-size:15px; font-weight:600; }
 
-  .btn-add {
-    background: linear-gradient(135deg, #5DCAA5, #AFA9EC);
-    border: none;
-    border-radius: 12px;
-    padding: 11px 26px;
-    color: white;
-    font-family: 'Nunito', sans-serif;
-    font-size: 14px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-    white-space: nowrap;
-  }
-  .btn-add:hover { opacity: 0.88; }
-  .btn-add:active { transform: scale(0.97); }
+  .vid-item { background:white; border-radius:16px; padding:14px 16px; display:flex; align-items:center; gap:14px; box-shadow:0 2px 8px rgba(0,0,0,0.05); transition:box-shadow 0.2s; }
+  .vid-item:hover { box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+  .vid-item.is-preloaded { border-left:4px solid #AFA9EC; }
+  .vid-thumb-sm { width:96px; height:60px; border-radius:10px; overflow:hidden; background:linear-gradient(135deg,#E1F5EE,#EEEDFE); flex-shrink:0; position:relative; }
+  .vid-thumb-sm img { width:100%; height:100%; object-fit:cover; display:block; }
+  .vid-thumb-sm-placeholder { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:28px; }
+  .vid-meta { flex:1; min-width:0; }
+  .vid-name { font-size:15px; font-weight:800; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:1px; }
+  .vid-channel { font-size:12px; color:var(--muted); font-weight:600; margin-bottom:2px; }
+  .vid-url { font-size:11px; color:#C0BEB7; font-family:monospace; }
+  .vid-tag-badge { font-size:11px; font-weight:700; padding:2px 10px; border-radius:50px; margin-top:5px; display:inline-block; }
+  .vid-actions { display:flex; gap:8px; flex-shrink:0; align-items:center; }
+  .btn-icon { background:none; border:2px solid #EEE; border-radius:10px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:15px; transition:all 0.2s; }
+  .btn-icon.del:hover { border-color:#F09595; background:#FCEBEB; }
+  .preloaded-star { font-size:14px; }
 
-  /* URL preview */
-  .url-preview {
-    background: #F7F5F0;
-    border-radius: 12px;
-    padding: 14px;
-    margin-top: 4px;
-    display: none;
-    align-items: center;
-    gap: 14px;
-    border: 1.5px solid #E8E6E0;
-  }
-  .url-preview.visible { display: flex; }
-  .preview-thumb {
-    width: 90px; height: 60px;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #DDD;
-    flex-shrink: 0;
-  }
-  .preview-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .preview-thumb-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 28px; }
-  .preview-vid-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-  .preview-vid-id { font-size: 11px; color: var(--muted); font-family: monospace; }
+  /* TAG COLORS */
+  .tag-learning { background:#E1F5EE; color:#0F6E56; }
+  .tag-music    { background:#FBEAF0; color:#993556; }
+  .tag-fun      { background:#FAEEDA; color:#854F0B; }
+  .tag-story    { background:#EEEDFE; color:#534AB7; }
+  .tag-science  { background:#E6F1FB; color:#185FA5; }
+  .tag-other    { background:#F1EFE8; color:#5F5E5A; }
 
-  /* Video list */
-  .video-list { display: flex; flex-direction: column; gap: 12px; }
-  .no-videos { text-align: center; padding: 40px; color: var(--muted); font-size: 15px; font-weight: 600; }
-
-  .vid-item {
-    background: white;
-    border-radius: 16px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: box-shadow 0.2s;
-  }
-  .vid-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
-
-  .vid-thumb-sm {
-    width: 96px; height: 60px;
-    border-radius: 10px;
-    overflow: hidden;
-    background: linear-gradient(135deg, #E1F5EE, #EEEDFE);
-    flex-shrink: 0;
-    position: relative;
-  }
-  .vid-thumb-sm img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .vid-thumb-sm-placeholder {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px;
-  }
-
-  .vid-meta { flex: 1; min-width: 0; }
-  .vid-name { font-size: 15px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
-  .vid-url { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: monospace; }
-  .vid-tag-badge { font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 50px; margin-top: 5px; display: inline-block; }
-
-  .vid-actions { display: flex; gap: 8px; flex-shrink: 0; }
-  .btn-icon {
-    background: none;
-    border: 2px solid #EEE;
-    border-radius: 10px;
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.2s;
-  }
-  .btn-icon.del:hover { border-color: #F09595; background: #FCEBEB; }
-
-  /* ===== TAG COLORS ===== */
-  .tag-learning { background: #E1F5EE; color: #0F6E56; }
-  .tag-music    { background: #FBEAF0; color: #993556; }
-  .tag-fun      { background: #FAEEDA; color: #854F0B; }
-  .tag-story    { background: #EEEDFE; color: #534AB7; }
-  .tag-science  { background: #E6F1FB; color: #185FA5; }
-  .tag-other    { background: #F1EFE8; color: #5F5E5A; }
-
-  /* ===== PIN OVERLAY ===== */
-  .pin-overlay-bg {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(20,10,50,0.88);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-  }
-  .pin-overlay-bg.active { display: flex; }
-
-  .pin-modal {
-    background: white;
-    border-radius: 28px;
-    padding: 36px 32px 28px;
-    width: 320px;
-    text-align: center;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.35);
-    animation: popIn 0.25s ease;
-  }
-  @keyframes popIn {
-    from { transform: scale(0.88); opacity: 0; }
-    to   { transform: scale(1); opacity: 1; }
-  }
-  .pin-modal-icon { font-size: 52px; margin-bottom: 10px; }
-  .pin-modal-title { font-family: 'Baloo 2', cursive; font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-  .pin-modal-sub { font-size: 14px; color: var(--muted); margin-bottom: 22px; min-height: 20px; }
-
-  .pin-dots-display { display: flex; justify-content: center; gap: 14px; margin-bottom: 22px; }
-  .pin-dot-d {
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    border: 2.5px solid #AFA9EC;
-    background: transparent;
-    transition: background 0.15s, transform 0.1s;
-  }
-  .pin-dot-d.filled { background: #AFA9EC; transform: scale(1.1); }
-
-  .pin-numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
-  .pin-key {
-    background: #F7F5F0;
-    border: 2px solid #EEE;
-    border-radius: 14px;
-    height: 56px;
-    font-family: 'Baloo 2', cursive;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text);
-    cursor: pointer;
-    transition: all 0.12s;
-    display: flex; align-items: center; justify-content: center;
-    user-select: none;
-  }
-  .pin-key:hover { background: #EEEDFE; border-color: #AFA9EC; }
-  .pin-key:active { transform: scale(0.92); background: #AFA9EC; color: white; }
-  .pin-key.backspace { font-size: 20px; }
-  .pin-key.cancel-key { background: none; border-color: #DDD; color: var(--muted); font-size: 14px; font-family: 'Nunito', sans-serif; }
-  .pin-key.cancel-key:hover { background: #FFF0EC; border-color: var(--coral); color: #993C1D; }
-
-  .pin-error { color: #D85A30; font-size: 13px; font-weight: 700; min-height: 20px; }
-  .pin-shake { animation: shake 0.35s ease; }
-  @keyframes shake {
-    0%,100% { transform: translateX(0); }
-    20%      { transform: translateX(-8px); }
-    60%      { transform: translateX(8px); }
-    80%      { transform: translateX(-4px); }
-  }
+  /* PIN OVERLAY */
+  .pin-overlay-bg { display:none; position:fixed; inset:0; background:rgba(20,10,50,0.88); z-index:100; align-items:center; justify-content:center; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+  .pin-overlay-bg.active { display:flex; }
+  .pin-modal { background:white; border-radius:28px; padding:36px 32px 28px; width:320px; text-align:center; box-shadow:0 24px 64px rgba(0,0,0,0.35); animation:popIn 0.25s ease; }
+  @keyframes popIn { from{transform:scale(0.88);opacity:0;} to{transform:scale(1);opacity:1;} }
+  .pin-modal-icon { font-size:52px; margin-bottom:10px; }
+  .pin-modal-title { font-family:'Baloo 2',cursive; font-size:22px; font-weight:800; color:var(--text); margin-bottom:4px; }
+  .pin-modal-sub { font-size:14px; color:var(--muted); margin-bottom:22px; min-height:20px; }
+  .pin-dots-display { display:flex; justify-content:center; gap:14px; margin-bottom:22px; }
+  .pin-dot-d { width:20px; height:20px; border-radius:50%; border:2.5px solid #AFA9EC; background:transparent; transition:background 0.15s, transform 0.1s; }
+  .pin-dot-d.filled { background:#AFA9EC; transform:scale(1.1); }
+  .pin-numpad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
+  .pin-key { background:#F7F5F0; border:2px solid #EEE; border-radius:14px; height:56px; font-family:'Baloo 2',cursive; font-size:24px; font-weight:700; color:var(--text); cursor:pointer; transition:all 0.12s; display:flex; align-items:center; justify-content:center; user-select:none; }
+  .pin-key:hover { background:#EEEDFE; border-color:#AFA9EC; }
+  .pin-key:active { transform:scale(0.92); background:#AFA9EC; color:white; }
+  .pin-key.backspace { font-size:20px; }
+  .pin-key.cancel-key { background:none; border-color:#DDD; color:var(--muted); font-size:14px; font-family:'Nunito',sans-serif; }
+  .pin-key.cancel-key:hover { background:#FFF0EC; border-color:var(--coral); color:#993C1D; }
+  .pin-error { color:#D85A30; font-size:13px; font-weight:700; min-height:20px; }
+  .pin-shake { animation:shake 0.35s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-8px);} 60%{transform:translateX(8px);} 80%{transform:translateX(-4px);} }
 </style>
 </head>
 <body>
 
-<!-- ===== KIDS SCREEN ===== -->
+<!-- KIDS SCREEN -->
 <div id="kids-screen" class="screen active">
   <div class="kids-header">
     <div class="kids-logo">⭐ KidsWatch</div>
     <div class="stars-deco">✨🌈✨</div>
-    <button class="parent-btn" onclick="openPinOverlay('parent')">🔒 Parents</button>
+    <button class="parent-btn" onclick="openPinOverlay()">🔒 Parents</button>
   </div>
   <div class="filter-bar" id="filter-bar-kids"></div>
   <div class="kids-grid" id="kids-grid"></div>
 </div>
 
-<!-- ===== PLAYER SCREEN ===== -->
+<!-- PLAYER SCREEN -->
 <div id="player-screen" class="screen">
   <div class="player-header">
     <button class="back-btn" onclick="goBack()">← Back</button>
@@ -569,11 +218,11 @@
   <div class="player-embed" id="player-embed"></div>
   <div class="player-meta">
     <h2 id="player-meta-title"></h2>
-    <p id="player-meta-tag"></p>
+    <p id="player-meta-sub"></p>
   </div>
 </div>
 
-<!-- ===== PARENT SCREEN ===== -->
+<!-- PARENT SCREEN -->
 <div id="parent-screen" class="screen">
   <div class="parent-header">
     <div class="parent-logo">🔒 Parent Dashboard</div>
@@ -581,18 +230,16 @@
   </div>
   <div class="parent-body">
 
-    <!-- PIN settings -->
     <div class="pin-section">
       <div class="section-title">Parent PIN</div>
-      <div class="pin-display">
+      <div class="pin-row">
         <div class="pin-dot"></div><div class="pin-dot"></div>
         <div class="pin-dot"></div><div class="pin-dot"></div>
-        <span class="pin-text">4-digit PIN protects this area</span>
+        <span class="pin-hint">4-digit PIN protects this area</span>
       </div>
       <button class="btn-change-pin" onclick="openChangePinOverlay()">Change PIN</button>
     </div>
 
-    <!-- Add video -->
     <div class="add-form">
       <div class="section-title">Add a Video</div>
       <div class="form-row">
@@ -601,12 +248,13 @@
       <div class="url-preview" id="url-preview">
         <div class="preview-thumb" id="preview-thumb"></div>
         <div>
-          <div class="preview-vid-title" id="preview-title">YouTube video detected!</div>
+          <div class="preview-vid-title">YouTube video detected!</div>
           <div class="preview-vid-id" id="preview-vid-id"></div>
         </div>
       </div>
       <div class="form-row" style="margin-top:12px">
-        <input class="form-input" id="input-name" type="text" placeholder="Title (optional — defaults to the URL)" />
+        <input class="form-input" id="input-name" type="text" placeholder="Title (optional)" />
+        <input class="form-input" id="input-channel" type="text" placeholder="Channel name (optional)" style="min-width:140px;flex:0.6" />
         <select class="tag-select" id="input-tag">
           <option value="fun">🎉 Fun</option>
           <option value="learning">📚 Learning</option>
@@ -619,23 +267,22 @@
       </div>
     </div>
 
-    <!-- Video list -->
-    <div class="section-title">Saved Videos (<span id="video-count">0</span>)</div>
+    <div class="section-title">All Videos (<span id="video-count">0</span>)</div>
+    <div class="info-banner">⭐ Purple-bar videos are preloaded defaults — great starting points. You can remove any of them.</div>
     <div class="video-list" id="parent-list"></div>
+
   </div>
 </div>
 
-<!-- ===== MAIN PIN OVERLAY ===== -->
+<!-- MAIN PIN OVERLAY -->
 <div class="pin-overlay-bg active" id="pin-overlay">
   <div class="pin-modal" id="pin-modal">
     <div class="pin-modal-icon">🔐</div>
     <div class="pin-modal-title" id="pin-modal-title">Welcome to KidsWatch!</div>
-    <div class="pin-modal-sub" id="pin-modal-sub">Create a 4-digit parent PIN to get started</div>
+    <div class="pin-modal-sub" id="pin-modal-sub">Create a 4-digit PIN to protect parent settings</div>
     <div class="pin-dots-display">
-      <div class="pin-dot-d" id="pd0"></div>
-      <div class="pin-dot-d" id="pd1"></div>
-      <div class="pin-dot-d" id="pd2"></div>
-      <div class="pin-dot-d" id="pd3"></div>
+      <div class="pin-dot-d" id="pd0"></div><div class="pin-dot-d" id="pd1"></div>
+      <div class="pin-dot-d" id="pd2"></div><div class="pin-dot-d" id="pd3"></div>
     </div>
     <div class="pin-numpad">
       <button class="pin-key" onclick="pinKey('1')">1</button>
@@ -655,17 +302,15 @@
   </div>
 </div>
 
-<!-- ===== CHANGE PIN OVERLAY ===== -->
+<!-- CHANGE PIN OVERLAY -->
 <div class="pin-overlay-bg" id="changepin-overlay">
   <div class="pin-modal" id="changepin-modal">
     <div class="pin-modal-icon">🔑</div>
     <div class="pin-modal-title">Change PIN</div>
     <div class="pin-modal-sub" id="cp-sub">Enter your current PIN</div>
     <div class="pin-dots-display">
-      <div class="pin-dot-d" id="cpd0"></div>
-      <div class="pin-dot-d" id="cpd1"></div>
-      <div class="pin-dot-d" id="cpd2"></div>
-      <div class="pin-dot-d" id="cpd3"></div>
+      <div class="pin-dot-d" id="cpd0"></div><div class="pin-dot-d" id="cpd1"></div>
+      <div class="pin-dot-d" id="cpd2"></div><div class="pin-dot-d" id="cpd3"></div>
     </div>
     <div class="pin-numpad">
       <button class="pin-key" onclick="cpKey('1')">1</button>
@@ -686,283 +331,224 @@
 </div>
 
 <script>
-// ===== CONSTANTS =====
-const TAG_LABELS  = { fun:'🎉 Fun', learning:'📚 Learning', music:'🎵 Music', story:'📖 Story', science:'🔭 Science', other:'🌟 Other' };
-const TAG_EMOJIS  = { fun:'🎉', learning:'📚', music:'🎵', story:'📖', science:'🔭', other:'🌟' };
-const STORE_KEY   = 'kidswatch_v2';
+// ===== 15 PRELOADED KIDS VIDEOS =====
+const PRELOADED = [
+  { id: 'sCNrK-nSAkU', title: 'Wheels on the Bus',               channel: 'Cocomelon',              tag: 'music'    },
+  { id: 'hS5CfP8n_js', title: 'Blippi Explores the Zoo',         channel: 'Blippi',                 tag: 'learning' },
+  { id: 'TpPtOWkWCjk', title: 'Baby Shark Dance',                channel: 'Pinkfong',               tag: 'music'    },
+  { id: 'wbMOQLlNTdo', title: 'Why Do We Have Seasons?',         channel: 'SciShow Kids',           tag: 'science'  },
+  { id: 'dE_GGMBvstc', title: 'Old MacDonald Had a Farm',        channel: 'Super Simple Songs',     tag: 'music'    },
+  { id: 'q5IQMZ8HYUI', title: 'All About Dinosaurs',             channel: 'National Geographic Kids', tag: 'science' },
+  { id: 'kkPkHFkOSoA', title: 'Numberblocks — Learn to Count',   channel: 'Numberblocks',           tag: 'learning' },
+  { id: 'c0XzKohFNW0', title: 'Alphablocks — Learn the Alphabet',channel: 'Alphablocks',            tag: 'learning' },
+  { id: 'MFaDeOkIHEo', title: 'What Is a Rainbow?',              channel: 'SciShow Kids',           tag: 'science'  },
+  { id: '6nqMegdbut4', title: 'Goodnight Moon — Read Aloud',     channel: 'Awnie\'s House',         tag: 'story'    },
+  { id: 'o7oHfOmvqk4', title: 'How to Draw a Cat',               channel: 'Art for Kids Hub',       tag: 'fun'      },
+  { id: 'TFHoKLBMuDE', title: 'Stomp and Shake Dance Break',     channel: 'GoNoodle',               tag: 'fun'      },
+  { id: 'uB3M_TOp-z8', title: 'How Does the Sun Give Us Energy?',channel: 'TED-Ed',                 tag: 'science'  },
+  { id: 'oYNiEfpGVo0', title: 'If You\'re Happy and You Know It',channel: 'Super Simple Songs',     tag: 'music'    },
+  { id: 'rBGKHKpDhPo', title: 'Colors Song for Kids',            channel: 'Cocomelon',              tag: 'learning' },
+];
 
-// ===== STATE =====
-let state = { pin: null, videos: [] };
-let pinInput   = '';
-let pinTarget  = null;   // 'parent'
-let cpStep     = 'current'; // 'current' | 'new' | 'confirm'
-let cpInput    = '';
-let cpNewPin   = '';
+const TAG_LABELS = { fun:'🎉 Fun', learning:'📚 Learning', music:'🎵 Music', story:'📖 Story', science:'🔭 Science', other:'🌟 Other' };
+const TAG_EMOJIS = { fun:'🎉', learning:'📚', music:'🎵', story:'📖', science:'🔭', other:'🌟' };
+const STORE_KEY  = 'kidswatch_v3';
+
+let state        = { pin: null, videos: [] };
+let pinInput     = '';
+let cpStep       = 'current', cpInput = '', cpNewPin = '';
 let activeFilter = 'all';
 
 // ===== STORAGE =====
-function saveState() {
-  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e) {}
-}
+function saveState() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e) {} }
 function loadState() {
-  try {
-    const raw = localStorage.getItem(STORE_KEY);
-    if (raw) Object.assign(state, JSON.parse(raw));
-  } catch(e) {}
+  try { const r = localStorage.getItem(STORE_KEY); if (r) Object.assign(state, JSON.parse(r)); } catch(e) {}
+  if (!state.videos || state.videos.length === 0) {
+    state.videos = PRELOADED.map(v => Object.assign({}, v, { preloaded: true, added: 0 }));
+  }
 }
 
-// ===== YOUTUBE UTILS =====
+// ===== YOUTUBE =====
 function getYTId(url) {
   if (!url) return null;
-  const patterns = [
-    /[?&]v=([a-zA-Z0-9_-]{11})/,
-    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
-  ];
-  for (const p of patterns) {
-    const m = url.match(p);
-    if (m) return m[1];
-  }
+  const pp = [ /[?&]v=([a-zA-Z0-9_-]{11})/, /youtu\.be\/([a-zA-Z0-9_-]{11})/, /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/, /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/ ];
+  for (const p of pp) { const m = url.match(p); if (m) return m[1]; }
   if (/^[a-zA-Z0-9_-]{11}$/.test(url.trim())) return url.trim();
   return null;
 }
-function thumbUrl(id) { return 'https://img.youtube.com/vi/' + id + '/mqdefault.jpg'; }
+function thumb(id) { return 'https://img.youtube.com/vi/' + id + '/mqdefault.jpg'; }
 
 // ===== URL PREVIEW =====
 let previewTimer = null;
 function onUrlInput(val) {
   clearTimeout(previewTimer);
   const id = getYTId(val);
-  const preview = document.getElementById('url-preview');
+  const el = document.getElementById('url-preview');
   if (id) {
     previewTimer = setTimeout(() => {
-      document.getElementById('preview-thumb').innerHTML =
-        '<img src="' + thumbUrl(id) + '" onerror="this.parentNode.innerHTML=\'<div class=preview-thumb-placeholder>🎬</div>\'" />';
-      document.getElementById('preview-title').textContent = 'YouTube video ready to add!';
+      document.getElementById('preview-thumb').innerHTML = '<img src="' + thumb(id) + '" onerror="this.parentNode.innerHTML=\'<div style=font-size:26px;height:100%;display:flex;align-items:center;justify-content:center>🎬</div>\'" />';
       document.getElementById('preview-vid-id').textContent = 'ID: ' + id;
-      preview.classList.add('visible');
+      el.classList.add('visible');
     }, 300);
-  } else {
-    preview.classList.remove('visible');
-  }
+  } else { el.classList.remove('visible'); }
 }
 
 // ===== ADD VIDEO =====
 function addVideo() {
-  const urlVal  = document.getElementById('input-url').value.trim();
-  const nameVal = document.getElementById('input-name').value.trim();
-  const tag     = document.getElementById('input-tag').value;
-  const id      = getYTId(urlVal);
+  const url  = document.getElementById('input-url').value.trim();
+  const name = document.getElementById('input-name').value.trim();
+  const chan = document.getElementById('input-channel').value.trim();
+  const tag  = document.getElementById('input-tag').value;
+  const id   = getYTId(url);
   if (!id) { alert('Please enter a valid YouTube link.'); return; }
-  const title = nameVal || ('Video ' + (state.videos.length + 1));
-  state.videos.push({ id, title, tag, url: urlVal, added: Date.now() });
+  state.videos.push({ id, title: name || ('Video ' + (state.videos.length + 1)), channel: chan, tag, url, added: Date.now(), preloaded: false });
   saveState();
-  document.getElementById('input-url').value  = '';
+  document.getElementById('input-url').value = '';
   document.getElementById('input-name').value = '';
+  document.getElementById('input-channel').value = '';
   document.getElementById('url-preview').classList.remove('visible');
   renderAll();
 }
 
-// ===== DELETE VIDEO =====
+// ===== DELETE =====
 function deleteVideo(idx) {
-  if (!confirm('Remove "' + state.videos[idx].title + '"?')) return;
+  const v = state.videos[idx];
+  if (!confirm('Remove "' + v.title + '"?')) return;
   state.videos.splice(idx, 1);
-  saveState();
-  renderAll();
+  saveState(); renderAll();
 }
 
 // ===== RENDER =====
 function renderAll() { renderKids(); renderParent(); }
 
 function renderKids() {
-  const grid      = document.getElementById('kids-grid');
-  const filterBar = document.getElementById('filter-bar-kids');
-
-  // Filter bar
+  const grid = document.getElementById('kids-grid');
+  const bar  = document.getElementById('filter-bar-kids');
   const tags = [...new Set(state.videos.map(v => v.tag))];
-  filterBar.innerHTML = '';
+  bar.innerHTML = '';
   if (state.videos.length > 0) {
-    const allChip = mkChip('🌟 All', activeFilter === 'all', () => { activeFilter = 'all'; renderKids(); });
-    filterBar.appendChild(allChip);
-    tags.forEach(tag => {
-      const chip = mkChip(TAG_LABELS[tag] || tag, activeFilter === tag, () => { activeFilter = tag; renderKids(); });
-      filterBar.appendChild(chip);
-    });
+    bar.appendChild(chip('🌟 All', activeFilter === 'all', () => { activeFilter='all'; renderKids(); }));
+    tags.forEach(t => bar.appendChild(chip(TAG_LABELS[t]||t, activeFilter===t, () => { activeFilter=t; renderKids(); })));
   }
-
-  const filtered = activeFilter === 'all' ? state.videos : state.videos.filter(v => v.tag === activeFilter);
-
-  if (filtered.length === 0) {
-    grid.innerHTML =
-      '<div class="empty-state">' +
-        '<div class="empty-emoji">🎬</div>' +
-        '<div class="empty-title">' + (state.videos.length === 0 ? 'No videos yet!' : 'Nothing here!') + '</div>' +
-        '<div class="empty-sub">' + (state.videos.length === 0 ? 'Ask a parent to add some fun videos 😊' : 'Try a different category!') + '</div>' +
-      '</div>';
+  const list = activeFilter === 'all' ? state.videos : state.videos.filter(v => v.tag === activeFilter);
+  if (list.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-emoji">🎬</div><div class="empty-title">' + (state.videos.length===0?'No videos yet!':'Nothing here!') + '</div><div class="empty-sub">' + (state.videos.length===0?'Ask a parent to add some videos 😊':'Try another category!') + '</div></div>';
     return;
   }
-
-  grid.innerHTML = filtered.map(v => {
-    const realIdx = state.videos.indexOf(v);
-    return (
-      '<div class="video-card" onclick="playVideo(' + realIdx + ')">' +
-        '<div class="thumb-wrap">' +
-          '<img src="' + thumbUrl(v.id) + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'" />' +
-          '<div class="thumb-placeholder" style="display:none">' + (TAG_EMOJIS[v.tag] || '🎬') + '</div>' +
-          '<div class="play-overlay"><div class="play-arrow"></div></div>' +
-        '</div>' +
-        '<div class="card-info">' +
-          '<div class="card-title">' + esc(v.title) + '</div>' +
-          '<span class="card-tag tag-' + v.tag + '">' + (TAG_LABELS[v.tag] || v.tag) + '</span>' +
-        '</div>' +
-      '</div>'
-    );
+  grid.innerHTML = list.map(v => {
+    const i = state.videos.indexOf(v);
+    return '<div class="video-card" onclick="play(' + i + ')">' +
+      '<div class="thumb-wrap">' +
+        '<img src="' + thumb(v.id) + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'" />' +
+        '<div class="thumb-placeholder" style="display:none">' + (TAG_EMOJIS[v.tag]||'🎬') + '</div>' +
+        '<div class="play-overlay"><div class="play-arrow"></div></div>' +
+        (v.preloaded ? '<div class="featured-badge">⭐ Featured</div>' : '') +
+      '</div>' +
+      '<div class="card-info">' +
+        (v.channel ? '<div class="card-channel">' + esc(v.channel) + '</div>' : '') +
+        '<div class="card-title">' + esc(v.title) + '</div>' +
+        '<span class="card-tag tag-' + v.tag + '">' + (TAG_LABELS[v.tag]||v.tag) + '</span>' +
+      '</div>' +
+    '</div>';
   }).join('');
 }
 
-function mkChip(label, isActive, fn) {
+function chip(label, active, fn) {
   const d = document.createElement('div');
-  d.className = 'filter-chip' + (isActive ? ' active' : '');
-  d.textContent = label;
-  d.onclick = fn;
-  return d;
+  d.className = 'filter-chip' + (active ? ' active' : '');
+  d.textContent = label; d.onclick = fn; return d;
 }
 
 function renderParent() {
   document.getElementById('video-count').textContent = state.videos.length;
   const list = document.getElementById('parent-list');
-  if (state.videos.length === 0) {
-    list.innerHTML = '<div class="no-videos">No videos saved yet — add one above!</div>';
-    return;
-  }
+  if (state.videos.length === 0) { list.innerHTML = '<div class="no-videos">No videos yet — add one above!</div>'; return; }
   list.innerHTML = state.videos.map((v, i) =>
-    '<div class="vid-item">' +
+    '<div class="vid-item' + (v.preloaded?' is-preloaded':'') + '">' +
       '<div class="vid-thumb-sm">' +
-        '<img src="' + thumbUrl(v.id) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'" />' +
-        '<div class="vid-thumb-sm-placeholder" style="display:none">' + (TAG_EMOJIS[v.tag] || '🎬') + '</div>' +
+        '<img src="' + thumb(v.id) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'" />' +
+        '<div class="vid-thumb-sm-placeholder" style="display:none">' + (TAG_EMOJIS[v.tag]||'🎬') + '</div>' +
       '</div>' +
       '<div class="vid-meta">' +
         '<div class="vid-name">' + esc(v.title) + '</div>' +
+        (v.channel ? '<div class="vid-channel">' + esc(v.channel) + '</div>' : '') +
         '<div class="vid-url">youtu.be/' + v.id + '</div>' +
-        '<span class="vid-tag-badge tag-' + v.tag + '">' + (TAG_LABELS[v.tag] || v.tag) + '</span>' +
+        '<span class="vid-tag-badge tag-' + v.tag + '">' + (TAG_LABELS[v.tag]||v.tag) + '</span>' +
       '</div>' +
       '<div class="vid-actions">' +
+        (v.preloaded ? '<span class="preloaded-star" title="Preloaded">⭐</span>' : '') +
         '<button class="btn-icon del" onclick="deleteVideo(' + i + ')" title="Remove">🗑</button>' +
       '</div>' +
     '</div>'
   ).join('');
 }
 
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ===== PLAYER =====
-function playVideo(idx) {
+function play(idx) {
   const v = state.videos[idx];
   document.getElementById('player-title').textContent     = v.title;
   document.getElementById('player-meta-title').textContent = v.title;
-  document.getElementById('player-meta-tag').textContent   = TAG_LABELS[v.tag] || v.tag;
+  document.getElementById('player-meta-sub').textContent   = (v.channel ? v.channel + ' · ' : '') + (TAG_LABELS[v.tag]||v.tag);
   document.getElementById('player-embed').innerHTML =
     '<iframe src="https://www.youtube.com/embed/' + v.id + '?autoplay=1&rel=0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>';
   showScreen('player-screen');
 }
+function goBack() { document.getElementById('player-embed').innerHTML = ''; showScreen('kids-screen'); }
 
-function goBack() {
-  document.getElementById('player-embed').innerHTML = '';
-  showScreen('kids-screen');
-}
+// ===== SCREENS =====
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function exitParent() { showScreen('kids-screen'); }
 
-// ===== SCREEN MANAGEMENT =====
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function exitParent() {
-  showScreen('kids-screen');
-}
-
-// ===== MAIN PIN OVERLAY =====
-function openPinOverlay(target) {
-  pinTarget = target;
-  pinInput  = '';
-  updatePinDots();
+// ===== MAIN PIN =====
+function openPinOverlay() {
+  pinInput = ''; updatePinDots();
   document.getElementById('pin-error').textContent = '';
-  const isSetup = !state.pin;
-  document.getElementById('pin-modal-title').textContent = isSetup ? 'Welcome to KidsWatch!' : 'Parent Access';
-  document.getElementById('pin-modal-sub').textContent   = isSetup ? 'Create a 4-digit parent PIN to get started' : 'Enter your 4-digit PIN';
-  document.getElementById('pin-cancel-btn').style.display = isSetup ? 'none' : '';
+  const setup = !state.pin;
+  document.getElementById('pin-modal-title').textContent = setup ? 'Welcome to KidsWatch!' : 'Parent Access';
+  document.getElementById('pin-modal-sub').textContent   = setup ? 'Create a 4-digit PIN to protect parent settings' : 'Enter your 4-digit PIN';
+  document.getElementById('pin-cancel-btn').style.display = setup ? 'none' : '';
   document.getElementById('pin-overlay').classList.add('active');
 }
-
-function cancelPin() {
-  if (!state.pin) return;
-  document.getElementById('pin-overlay').classList.remove('active');
-}
+function cancelPin() { if (!state.pin) return; document.getElementById('pin-overlay').classList.remove('active'); }
 
 function pinKey(d) {
   if (pinInput.length >= 4) return;
-  pinInput += d;
-  updatePinDots();
+  pinInput += d; updatePinDots();
   if (pinInput.length === 4) {
     setTimeout(() => {
       if (!state.pin) {
-        // Setup mode — save PIN and go to parent dashboard
-        state.pin = pinInput;
-        saveState();
+        state.pin = pinInput; saveState();
         document.getElementById('pin-overlay').classList.remove('active');
-        showScreen('parent-screen');
-        renderAll();
+        showScreen('parent-screen'); renderAll();
+      } else if (pinInput === state.pin) {
+        document.getElementById('pin-overlay').classList.remove('active');
+        showScreen('parent-screen'); renderAll();
       } else {
-        if (pinInput === state.pin) {
-          document.getElementById('pin-overlay').classList.remove('active');
-          showScreen('parent-screen');
-          renderAll();
-        } else {
-          document.getElementById('pin-error').textContent = 'Wrong PIN — try again.';
-          document.getElementById('pin-modal').classList.add('pin-shake');
-          setTimeout(() => document.getElementById('pin-modal').classList.remove('pin-shake'), 400);
-          pinInput = '';
-          updatePinDots();
-        }
+        document.getElementById('pin-error').textContent = 'Wrong PIN — try again.';
+        document.getElementById('pin-modal').classList.add('pin-shake');
+        setTimeout(() => document.getElementById('pin-modal').classList.remove('pin-shake'), 400);
+        pinInput = ''; updatePinDots();
       }
     }, 180);
   }
 }
-
-function pinBackspace() {
-  pinInput = pinInput.slice(0, -1);
-  updatePinDots();
-  document.getElementById('pin-error').textContent = '';
-}
-
-function updatePinDots() {
-  for (let i = 0; i < 4; i++) {
-    document.getElementById('pd' + i).classList.toggle('filled', i < pinInput.length);
-  }
-}
+function pinBackspace() { pinInput = pinInput.slice(0,-1); updatePinDots(); document.getElementById('pin-error').textContent=''; }
+function updatePinDots() { for(let i=0;i<4;i++) document.getElementById('pd'+i).classList.toggle('filled', i<pinInput.length); }
 
 // ===== CHANGE PIN =====
 function openChangePinOverlay() {
-  cpStep   = 'current';
-  cpInput  = '';
-  cpNewPin = '';
-  updateCpDots();
-  document.getElementById('cp-sub').textContent   = 'Enter your current PIN';
+  cpStep='current'; cpInput=''; cpNewPin=''; updateCpDots();
+  document.getElementById('cp-sub').textContent = 'Enter your current PIN';
   document.getElementById('cp-error').textContent = '';
   document.getElementById('changepin-overlay').classList.add('active');
 }
-
-function cancelChangePin() {
-  document.getElementById('changepin-overlay').classList.remove('active');
-}
+function cancelChangePin() { document.getElementById('changepin-overlay').classList.remove('active'); }
 
 function cpKey(d) {
   if (cpInput.length >= 4) return;
-  cpInput += d;
-  updateCpDots();
+  cpInput += d; updateCpDots();
   if (cpInput.length === 4) {
     setTimeout(() => {
       if (cpStep === 'current') {
@@ -970,56 +556,37 @@ function cpKey(d) {
           document.getElementById('cp-error').textContent = 'Wrong PIN.';
           document.getElementById('changepin-modal').classList.add('pin-shake');
           setTimeout(() => document.getElementById('changepin-modal').classList.remove('pin-shake'), 400);
-          cpInput = ''; updateCpDots(); return;
+          cpInput=''; updateCpDots(); return;
         }
-        cpStep  = 'new'; cpInput = '';
-        document.getElementById('cp-sub').textContent   = 'Enter your new PIN';
-        document.getElementById('cp-error').textContent = '';
-        updateCpDots();
+        cpStep='new'; cpInput='';
+        document.getElementById('cp-sub').textContent='Enter your new PIN';
+        document.getElementById('cp-error').textContent=''; updateCpDots();
       } else if (cpStep === 'new') {
-        cpNewPin = cpInput;
-        cpStep   = 'confirm'; cpInput = '';
-        document.getElementById('cp-sub').textContent   = 'Confirm your new PIN';
-        document.getElementById('cp-error').textContent = '';
-        updateCpDots();
-      } else if (cpStep === 'confirm') {
+        cpNewPin=cpInput; cpStep='confirm'; cpInput='';
+        document.getElementById('cp-sub').textContent='Confirm your new PIN';
+        document.getElementById('cp-error').textContent=''; updateCpDots();
+      } else {
         if (cpInput !== cpNewPin) {
-          document.getElementById('cp-error').textContent = "PINs don't match — try again.";
+          document.getElementById('cp-error').textContent="PINs don't match — try again.";
           document.getElementById('changepin-modal').classList.add('pin-shake');
           setTimeout(() => document.getElementById('changepin-modal').classList.remove('pin-shake'), 400);
-          cpStep  = 'new'; cpInput = '';
-          document.getElementById('cp-sub').textContent = 'Enter your new PIN';
+          cpStep='new'; cpInput='';
+          document.getElementById('cp-sub').textContent='Enter your new PIN';
           updateCpDots(); return;
         }
-        state.pin = cpNewPin;
-        saveState();
+        state.pin=cpNewPin; saveState();
         document.getElementById('changepin-overlay').classList.remove('active');
         alert('PIN updated successfully! 🎉');
       }
     }, 180);
   }
 }
-
-function cpBackspace() {
-  cpInput = cpInput.slice(0, -1);
-  updateCpDots();
-  document.getElementById('cp-error').textContent = '';
-}
-
-function updateCpDots() {
-  for (let i = 0; i < 4; i++) {
-    document.getElementById('cpd' + i).classList.toggle('filled', i < cpInput.length);
-  }
-}
+function cpBackspace() { cpInput=cpInput.slice(0,-1); updateCpDots(); document.getElementById('cp-error').textContent=''; }
+function updateCpDots() { for(let i=0;i<4;i++) document.getElementById('cpd'+i).classList.toggle('filled', i<cpInput.length); }
 
 // ===== INIT =====
 loadState();
-if (!state.pin) {
-  // First launch — show PIN setup
-  document.getElementById('pin-overlay').classList.add('active');
-} else {
-  document.getElementById('pin-overlay').classList.remove('active');
-}
+document.getElementById('pin-overlay').classList.toggle('active', !state.pin);
 renderAll();
 </script>
 </body>
